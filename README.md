@@ -27,3 +27,8 @@ https://www.careerist.com/automation
 # https://www.browserstack.com/docs/automate/capabilities
 
 # For Reference https://www.jetbrains.com/help/pycharm/run-debug-configuration.html
+
+#### To Generate report in Allure
+# run below command
+# behave -f allure_behave.formatter:AllureFormatter -o test_results/ .\features\tests\offplan_sales_status_filter.feature
+# allure serve test_results/
