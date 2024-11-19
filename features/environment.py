@@ -42,6 +42,32 @@ def browser_init(context, scenario_name):
         }
         options.set_capability('bstack:options', bstack_options)
         context.driver = webdriver.Remote(command_executor=url, options=options)
+    elif RUN_WITH_DRIVER == 'BROWSERSTACK_MOBILE':
+        ### BROWSERSTACK MOBILE TESTING###
+        # Register for BrowserStack, then grab it from https://www.browserstack.com/accounts/settings
+        bs_user = os.getenv("BROWSER_STACK_USER")
+        bs_key = os.getenv("BROWSER_STACK_KEY")
+        bs_os_version = os.getenv("BROWSER_OS_VERSION") #16
+        bs_browser_name = os.getenv("BROWSER_NAME") #chromium
+        bs_device_name = os.getenv("BROWSER_DEVICE_NAME") #iPhone 14 Pro Max
+
+        url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+        # Set Options
+        options = Options()
+        bstack_options = {
+            "osVersion": bs_os_version,
+            "browserName": bs_browser_name,
+            "deviceName": bs_device_name,
+            "sessionName": scenario_name
+        }
+        options.set_capability('bstack:options', bstack_options)
+        context.driver = webdriver.Remote(command_executor=url, options=options)
+    elif RUN_WITH_DRIVER == 'MOBILE':
+        device_name = os.getenv("BROWSER_DEVICE_NAME")
+        mobile_emulation = {"deviceName": device_name}
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+        context.driver = webdriver.Chrome(chrome_options)
     else:
         raise Exception("Please set environment variable 'RUN_WITH_DRIVER' to either 'CHROME' or 'FIREFOX' " +
                         'refer to instructions in feature file or README file for more details.')
