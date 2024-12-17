@@ -32,6 +32,7 @@ class Page:
 
     def wait_for_element_to_appear(self, *locator):
             self.driver.wait.until(
-                EC.visibility_of_element_located(locator),
+                EC.visibility_of_all_elements_located(locator),
                 message=f'Element by {locator} did not appear'
             )
+

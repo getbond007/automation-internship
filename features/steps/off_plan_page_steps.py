@@ -15,3 +15,11 @@ def click_on_sales_status_drop_down(context):
 @then('Verify each product contains the Out of Stocks tag')
 def verify_out_of_stocks(context):
     context.app.off_plan_page.verify_out_of_stocks()
+
+@then('Filter the products by price range from 1200000 to 2000000 AED')
+def filter_products_by_price(context):
+    context.app.off_plan_page.filter_products_by_price()
+
+@then('Verify the price in all cards is inside the range (1200000 - 2000000)')
+def verify_price_in_cards(context):
+    context.app.off_plan_page.verify_price_in_cards()
