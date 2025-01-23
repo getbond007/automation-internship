@@ -22,4 +22,8 @@ def filter_products_by_price(context):
 
 @then('Verify the price in all cards is inside the range (1200000 - 2000000)')
 def verify_price_in_cards(context):
-    context.app.off_plan_page.verify_price_in_cards()
+    context.app.off_plan_page.verify_each_off_plan_page("PRICE_FILTER")
+
+@then('Verify each product on this page contains a title and picture visible')
+def verify_product_title_image_in_cards(context):
+    context.app.off_plan_page.verify_each_off_plan_page("PRODUCT_TITLE")
