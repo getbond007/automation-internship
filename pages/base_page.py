@@ -1,3 +1,5 @@
+from time import sleep
+
 from selenium.webdriver.support import expected_conditions as EC
 
 class Page:
@@ -36,3 +38,5 @@ class Page:
                 message=f'Element by {locator} did not appear'
             )
 
+    def wait(self,sec):
+        sleep(sec)

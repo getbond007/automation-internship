@@ -12,7 +12,7 @@ def verify_off_plan(context):
 def click_on_sales_status_drop_down(context):
     context.app.off_plan_page.select_status_out_of_stocks()
 
-@then('Verify each product contains the Out of Stocks tag')
+@then('Verify that each product contains the Out of Stocks tag')
 def verify_out_of_stocks(context):
     context.app.off_plan_page.verify_out_of_stocks()
 

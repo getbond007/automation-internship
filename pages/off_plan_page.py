@@ -49,7 +49,7 @@ class OffPlanPage(Page):
     #Verify if sales status is displaying as expected for selected filter
     def verify_out_of_stocks(self):
         # Find all sales status elements
-        self.wait_for_element_to_appear(*self.OUT_OF_STOCK_STATUS)
+        self.wait(5)
 
         statuses = self.find_elements(*self.OUT_OF_STOCK_STATUS)
         #Expectd Status
