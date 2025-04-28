@@ -26,6 +26,9 @@ class Page:
         actual_text = self.find_element(*locator).text
         assert actual_text == expected_text, f'Expected {expected_text} did not match actual {actual_text}'
 
+    def verify_actual_text(self, expected_text, actual_text):
+        assert actual_text == expected_text, f'Expected {expected_text} did not match actual {actual_text}'
+
     def wait_to_be_clickable(self, *locator):
         self.driver.wait.until(
             EC.element_to_be_clickable(locator),
