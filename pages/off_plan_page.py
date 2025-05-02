@@ -8,10 +8,11 @@ from selenium.webdriver.common.by import By
 
 class OffPlanPage(Page):
 
-    OFF_PLAN_MENU = (By.XPATH, "//a[@class='menu-text-link-leaderboard w--current']")
+    #OLD off plan menu, new off plan menu is beta phase
+    OFF_PLAN_MENU = (By.XPATH, "//div[@class='menu-old']")
     SALES_STATUS = (By.CSS_SELECTOR,"#Location-2")
     OUT_OF_STOCK_STATUS = (By.XPATH, "//div[@class='_5-comission']")
-    OFF_PLAN_TITLE = (By.CSS_SELECTOR,"div.page-title.off_plan")
+    OFF_PLAN_TITLE = (By.CSS_SELECTOR,"div.off_plan")
 
     FILTER_ICON = (By.CSS_SELECTOR, 'a .filter-text')
     FILTER_PRICE_FROM = (By.CSS_SELECTOR, '[wized="unitPriceFromFilter"]')
@@ -29,11 +30,13 @@ class OffPlanPage(Page):
     NEXT_PAGE = (By.CSS_SELECTOR, '[wized="nextPageProperties"]')
     TOTAL_NUMBER_OF_PAGES = (By.CSS_SELECTOR, '[wized="totalPageProperties"]')
     CURRENT_PAGE_COUNT = (By.CSS_SELECTOR, '[wized="currentPageProperties"]')
+    PREVIOUS_PAGE = (By.CSS_SELECTOR, '[wized="previousPageProperties"]')
+
+    TOTAL_NEXT = 0
 
     #Select the off plan menu option
     def click_on_off_plan(self):
-        self.wait_for_element_to_appear(*self.OFF_PLAN_MENU)
-        self.wait_to_be_clickable(*self.OFF_PLAN_MENU)
+        self.click(*self.OFF_PLAN_MENU)
 
     #Verify that correct page is opened
     def verify_off_plan(self):
@@ -151,5 +154,37 @@ class OffPlanPage(Page):
                 print(f'Finished Page Number : {page_increment}')
 
         #Assert if total number of project asserted is same as
-        #total number of projects displayed on main page
         assert project_increment == int(total_number_of_projects), f'Expected Product count {project_increment} is not matching with Actual Product count {total_number_of_projects}'
+
+    def verify_next_page(self):
+        OffPlanPage.verify_page(self,"Next",1,*self.NEXT_PAGE)
+        return
+
+    def verify_previous_page(self,page_count):
+        OffPlanPage.verify_page(self,"Previous",page_count,*self.PREVIOUS_PAGE)
+        return
+
+    def verify_page(self,mode,page_count,*locator):
+        is_changing = True
+        while is_changing:
+            before_click_content = self.find_elements(*self.TITLE_IN_EACH_CARD)[0].text
+            self.click(*locator)
+            self.wait_for_element_to_appear(*self.IMAGE_IN_EACH_CARD)
+            after_click_content = self.find_elements(*self.TITLE_IN_EACH_CARD)[0].text
+            if before_click_content.__eq__(after_click_content):
+                print("No change detected, stopping here, page count = " + str(page_count))
+                is_changing = False
+            else:
+                print(mode + " Button - Change detected, moving to" + mode +"page, current page count = " + str(page_count))
+                self.click(*locator)
+                if mode == "Next":
+                    page_count = page_count + 1
+                else :
+                    page_count = page_count - 1
+
+            self.wait_for_element_to_appear(*self.IMAGE_IN_EACH_CARD)
+
+        if mode.__eq__("Next"):
+            OffPlanPage.verify_previous_page(self,page_count)
+        else:
+            print(mode + " Button - No change detected, both the buttons are done now, page count = " + str(page_count))

@@ -27,3 +27,7 @@ def verify_price_in_cards(context):
 @then('Verify each product on this page contains a title and picture visible')
 def verify_product_title_image_in_cards(context):
     context.app.off_plan_page.verify_each_off_plan_page("PRODUCT_TITLE")
+
+@then('Go to the final page using the pagination button and Go back to the first page using the pagination button')
+def final_page_using_pagination_button(context):
+    context.app.off_plan_page.verify_next_page()
